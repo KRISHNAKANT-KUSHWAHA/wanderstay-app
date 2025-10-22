@@ -1,0 +1,25 @@
+<% layout("/layouts/boilerplate") %>
+
+<div
+  class="d-flex flex-column align-items-center justify-content-center"
+  style="height: 80vh"
+>
+  <div class="card shadow-lg p-4 text-center" style="max-width: 500px">
+    <i
+      class="fa-solid fa-triangle-exclamation text-danger"
+      style="font-size: 3rem"
+    ></i>
+    <h3 class="mt-3 text-danger">Oops! Something went wrong</h3>
+    <p class="text-muted"><%= message %></p>
+    <p class="fw-bold">Error Code: <%= statusCode %></p>
+
+    <% if (process.env.NODE_ENV !== "production") { %>
+    <pre class="text-start bg-light p-2 rounded mt-3" style="font-size: 0.8rem">
+<%= err && err.stack ? err.stack : "" %>
+      </pre
+    >
+    <% } %>
+
+    <a href="/listings" class="btn btn-dark mt-3">Go Back Home</a>
+  </div>
+</div>

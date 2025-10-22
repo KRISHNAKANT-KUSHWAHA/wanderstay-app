@@ -1,0 +1,8 @@
+# Ignore app2.js
+app2.js
+
+# Ignore ruf folder
+ruf/
+
+# Ignore A_express_router folder
+A_express_router/

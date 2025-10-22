@@ -1,0 +1,140 @@
+<% layout("/layouts/boilerplate")%>
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Listing</title>
+  </head>
+  <body> -->
+<div class="row mt-4">
+  <div class="col-8 offset-2">
+    <h3>Edit your Listing</h3>
+    <!-- ✅ Fixed form action and kept method=POST for method-override -->
+    <form
+      method="POST"
+      action="/listings/<%= listing._id %>?_method=PUT"
+      novalidate
+      class="needs-validation"
+    >
+      <!-- Title field -->
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input
+          name="listing[title]"
+          value="<%= listing.title %>"
+          type="text"
+          required
+          class="form-control"
+          id="title"
+        />
+        <div class="valid-feedback">Title look good!</div>
+        <div class="invalid-feedback">Title shoud be attractive!</div>
+      </div>
+
+      <!-- <br /><br /> -->
+
+      <!-- ✅ Changed description from input to textarea for better UX -->
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea
+          name="listing[description]"
+          rows="4"
+          cols="40"
+          class="form-control"
+          id="description"
+          required
+        >
+<%= listing.description %></textarea
+        >
+        <div class="valid-feedback">Description look good!</div>
+        <div class="invalid-feedback">Description should be short</div>
+      </div>
+
+      <!-- <br /><br /> -->
+
+      <!-- Image URL -->
+      <div class="mb-3">
+        <label for="image" class="form-label">Image link</label>
+        <input
+          name="listing[image]"
+          value="<%= listing.image %>"
+          type="text"
+          class="form-control"
+          id="image"
+          required
+        />
+        <div class="valid-feedback">Nice image!</div>
+        <div class="invalid-feedback">Image should be there</div>
+      </div>
+
+      <!-- <br /><br /> -->
+
+      <div class="row">
+        <!-- ✅ Changed price type to number (better validation) -->
+        <div class="mb-3 col-md-4">
+          <label for="price" class="form-label">Price</label>
+          <input
+            name="listing[price]"
+            value="<%= listing.price %>"
+            type="number"
+            min="0"
+            class="form-control"
+            id="price"
+            required
+          />
+          <div class="invalid-feedback">Price should be valid</div>
+        </div>
+
+        <!-- <br /><br /> -->
+
+        <!-- Country -->
+        <div class="mb-3 col-md-8">
+          <label for="country" class="form-label">country</label>
+          <input
+            name="listing[country]"
+            value="<%= listing.country %>"
+            type="text"
+            class="form-control"
+            id="country"
+            required
+          />
+          <div class="invalid-feedback">Country should be valid</div>
+        </div>
+      </div>
+
+      <!-- <br /><br /> -->
+
+      <!-- Location -->
+      <div class="mb-3">
+        <label for="Location" class="form-label">Location</label>
+        <input
+          name="listing[location]"
+          value="<%= listing.location %>"
+          type="text"
+          class="form-control"
+          id="Location"
+          required
+        />
+          <div class="invalid-feedback">Location should be valid</div>
+      </div>
+
+      </div>
+
+      <!-- <br /><br /> -->
+      <!-- <button type="submit" class="btn btn-dark edit-btn mb-3 btn-sm ">Edit</button> -->
+         <div class="d-flex justify-content-center mb-3">
+    <button type="submit" class="btn btn-dark edit-btn">
+      Edit
+    </button>
+  </div>
+      <!-- ✅ Added type="submit" -->
+    </form>
+  </div>
+</div>
+
+<!-- </body>
+</html> -->
+
+<!-- form validation kr di he jisse koi galat data nhi daaal nhi daal payegaf -->
