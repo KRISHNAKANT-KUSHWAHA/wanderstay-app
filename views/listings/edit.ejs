@@ -1,22 +1,13 @@
 <% layout("/layouts/boilerplate")%>
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Edit Listing</title>
-  </head>
-  <body> -->
 <div class="row mt-4">
   <div class="col-8 offset-2">
     <h3>Edit your Listing</h3>
-    <!-- ✅ Fixed form action and kept method=POST for method-override -->
     <form
       method="POST"
-      action="/listings/<%= listing._id %>?_method=PUT"
-      novalidate
-      class="needs-validation"
+  action="/listings/<%= listing._id %>?_method=PUT"
+  enctype="multipart/form-data"
+  novalidate
+  class="needs-validation"
     >
       <!-- Title field -->
       <div class="mb-3">
@@ -34,8 +25,6 @@
       </div>
 
       <!-- <br /><br /> -->
-
-      <!-- ✅ Changed description from input to textarea for better UX -->
       <div class="mb-3">
         <label for="description" class="form-label">Description</label>
         <textarea
@@ -55,24 +44,25 @@
       <!-- <br /><br /> -->
 
       <!-- Image URL -->
-      <div class="mb-3">
-        <label for="image" class="form-label">Image link</label>
-        <input
-          name="listing[image]"
-          value="<%= listing.image %>"
-          type="text"
-          class="form-control"
-          id="image"
-          required
-        />
-        <div class="valid-feedback">Nice image!</div>
-        <div class="invalid-feedback">Image should be there</div>
+
+      
+      
+     <div class="mb-3">
+        Original Listing Image<br />
+        <img src="<%=originalImageUrl%>" />
       </div>
+      <div class="mb-3">
+        <lable for="image" class="form-label">Upload New Image</lable>
+        <input name="listing[image]" type="file" class="form-control" />
+      </div>
+
+     
+
+
 
       <!-- <br /><br /> -->
 
       <div class="row">
-        <!-- ✅ Changed price type to number (better validation) -->
         <div class="mb-3 col-md-4">
           <label for="price" class="form-label">Price</label>
           <input
@@ -91,7 +81,7 @@
 
         <!-- Country -->
         <div class="mb-3 col-md-8">
-          <label for="country" class="form-label">country</label>
+          <label for="country" class="form-label">Country</label>
           <input
             name="listing[country]"
             value="<%= listing.country %>"
@@ -104,11 +94,11 @@
         </div>
       </div>
 
-      <!-- <br /><br /> -->
-
       <!-- Location -->
       <div class="mb-3">
         <label for="Location" class="form-label">Location</label>
+
+        
         <input
           name="listing[location]"
           value="<%= listing.location %>"

@@ -4,99 +4,57 @@ const router = express.Router(); //creates new router object
 const wrapAsync = require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/ExpressError.js");
 const { listingSchema, reviewSchema } = require("../schema.js"); //for server side validation
-const Listing = require("../models/listing.js"); // ✅ renamed testlisting → Listing
-
+const Listing = require("../models/listing.js"); //
+const { isLoggedIn, isOwner, validateListing } = require("../middleware.js");
+const listingController = require("../controller/listings");
+//file uploading
+const multer = require("multer");
+const { storage } = require("../cloudConfig.js");
+const upload = multer({ storage });
 // error ko validate krna  jo ki  joi se ho agr neche use kr rhe  hm post route me
-const validateListing = (req, res, next) => {
-  let { error } = listingSchema.validate(req.body);
-  if (error) {
-    let errMsg = error.details.map((el) => el.message).join(",");
-    throw new ExpressError(400, errMsg);
-  } else {
-    next();
-  }
-};
 
-// index route
-router.get(
-  "/",
-  wrapAsync(async (req, res) => {
-    const allListings = await Listing.find({});
-    res.render("listings/index.ejs", { allListings });
-  })
-);
+// index route & create route
+router
+  .route("/")
+  .get(wrapAsync(listingController.index))
+  .post(
+    isLoggedIn,
+    upload.single("listing[image]"),
+    validateListing,
+    wrapAsync(listingController.createListing)
+  );
 
 // new route
-router.get("/new", (req, res) => {
-  res.render("listings/new.ejs");
-});
+router.get("/new", isLoggedIn, listingController.renderNewForm);
 
-// show route
-router.get(
-  "/:id",
-  wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    const listing = await Listing.findById(id).populate("reviews");
-    res.render("listings/show.ejs", { listing });
-  })
-);
-
-// Create Route👽
-
-// error handling using wrapAsync👌
-router.post(
-  "/",
-  validateListing,
-  wrapAsync(async (req, res, next) => {
-    // if (!req.body.listing) {
-    //   // req  me koi body nhi huye to ye send ho jayega
-    //   throw new ExpressError(400, "send valid data for listing");
-    // }
-
-    // validate using joi
-
-    // if we use this as a middleware then we create middleware for this above {under the root route}
-
-    const newListing = new Listing(req.body.listing); //instance of listing(req ki body se listing object ko niklana)
-    await newListing.save(); //insert this document into MongoDB.”
-    res.redirect("/");
-  })
-);
-
+// show route & update route
+router
+  .route("/:id")
+  .get(wrapAsync(listingController.showListing))
+  .put(
+    isLoggedIn,
+    isOwner,
+    upload.single("listing[image]"),
+    validateListing,
+    wrapAsync(listingController.updateListing)
+  )
+  .delete(isLoggedIn, isOwner, wrapAsync(listingController.destroyListing));
 // Edit Route
-
 router.get(
   "/:id/edit",
-  wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    const listing = await Listing.findById(id); //particular listing ko find kr liya
-    res.render("/edit.ejs", { listing });
-  })
+  isLoggedIn,
+  isOwner,
+  wrapAsync(listingController.renderEditForm)
 );
 
 // update Route
-router.put(
-  "/:id/",
-  wrapAsync(async (req, res) => {
-    if (!req.body.listing) {
-      throw new ExpressError(400, "send valid data for listing");
-    }
-
-    let { id } = req.params;
-    await Listing.findByIdAndUpdate(id, { ...req.body.listing }); //req.body.listing javascipt ki object he jiske andar sare ke sare parameter he
-    res.redirect(`/listings/${id}`); //redirect to show route
-  })
-);
 
 // delete route
-router.delete(
-  "/:id",
-  wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    let deleteListing = await Listing.findByIdAndDelete(id); //this is also call the post mongoose middle ware
-    console.log("delete listing" + deleteListing);
-    res.redirect("/listings");
-  })
-);
+// router.delete(
+//   "/:id",
+//   isLoggedIn,
+//   isOwner,
+//   wrapAsync(listingController.destroyListing)
+// );
 
 module.exports = router;

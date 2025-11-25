@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
-const { sampleListings } = require("./data.js"); // ✅ fixed import
+const { initData } = require("./data.js");
 const Listing = require("../models/listing.js");
 
-const MONGO_URL = "mongodb://127.0.0.1/wander";
+const MONGO_URL = "mongodb://127.0.0.1/wanderstay";
 
 main()
   .then(() => {
@@ -18,8 +18,14 @@ async function main() {
 
 const initDB = async () => {
   await Listing.deleteMany({});
-  // ✅ fixed from initData.sampleListings → sampleListings
-  await Listing.insertMany(sampleListings);
+
+  const initData2 = initData.map((obj) => ({
+    ...obj,
+    owner: new mongoose.Types.ObjectId("6922123309e9458751770c18"),
+  }));
+
+  await Listing.insertMany(initData2);
+
   console.log("data was initialised");
 };
 

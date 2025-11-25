@@ -9,16 +9,11 @@ const listingSchema = new Schema({
   },
   description: {
     type: String,
-    required: true,
+    required: true, 
   },
   image: {
-    type: String,
-    // ✅ use a proper default Unsplash image link
-    default: "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0",
-    set: (v) =>
-      v === ""
-        ? "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0"
-        : v,
+    url: String,
+    filename: String,
   },
   price: {
     type: Number,
@@ -32,6 +27,10 @@ const listingSchema = new Schema({
       ref: "Review",
     },
   ],
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 // post mongoose middleware for deleting all review if delete a particular list

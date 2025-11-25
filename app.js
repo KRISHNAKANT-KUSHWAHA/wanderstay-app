@@ -1,7 +1,11 @@
+if (process.env.NODE_ENV != "production") {
+  require("dotenv").config();
+}
+
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const Listing = require("./models/listing.js"); // ✅ renamed testlisting → Listing
+const Listing = require("./models/listing.js");
 const Path = require("path");
 const MONGO_URL = "mongodb://127.0.0.1/wander";
 const methodOverride = require("method-override");
@@ -9,11 +13,17 @@ const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError.js");
 const wrapAsync = require("./utils/wrapAsync.js");
 const { listingSchema, reviewSchema } = require("./schema.js"); //for server side validation
+// const Reviews = require("./models/review.js"); // require review
+const listingRouter = require("./routes/listing.js"); // require listing
+const reviewRouter = require("./routes/review.js"); // require reviews
+const userRouter = require("./routes/user.js");
 
-const Reviews = require("./models/review.js"); // require review
+const session = require("express-session");
+const flash = require("connect-flash");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const User = require("./models/user.js");
 
-const listings = require("./routes/listing.js"); // require listing
-const reviews = require("./routes/review.js"); // require reviews
 main()
   .then(() => {
     console.log("connected to DB");
@@ -32,39 +42,62 @@ app.use(methodOverride("_method")); // (_method) method ko use krne wale he
 app.engine("ejs", ejsMate);
 app.use(express.static(Path.join(__dirname, "/public")));
 
+const sessionOptions = {
+  secret: "mysupersecretcode",
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    // ✅ should be singular — "cookie", not "cookies"
+    expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // after this time session will end
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    httpOnly: true, // // prevent fron cross scripting attack
+  },
+};
+
 // Root route
 app.get("/", (req, res) => {
   res.send("hi, i am root");
 });
 
-// validate listing
+app.use(session(sessionOptions));
+app.use(flash()); // use flash before route
 
+//Passport Configuration
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Use local strategy for authentication
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+app.use((req, res, next) => {
+  // middleware
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  res.locals.currUser = req.user;
+  next();
+});
+
+//demo user
+
+// app.get("/demouser", async (req, res) => {
+//   let fakeUser = new User({
+//     email: "student@gmail.com",
+//     username: "delta-student",
+//   });
+
+//   let registeredUser = await User.register(fakeUser, "helloworld");
+//   res.send(registeredUser);
+// });
+// validate listing
 // validate listing as a middleware jo ki uper likha he ...leave this topic right now check after view time
 
-app.use("/listings", listings); //this single line handle all listing related request
+app.use("/listings", listingRouter); //this single line handle all listing related request
 
-// index route
-
-// new route
-
-// show route
-
-// Create Route👽
-
-// Edit Route
-
-// delete route
-
-// en listing route ki restructuring krdi hmne and in routes folder......
-
-// validate review
-
-// Reviews
-// Post review route
-
-// Delete review route
-
-app.use("/listings/:id/reviews", reviews);
+app.use("/listings/:id/reviews", reviewRouter);
+app.use("/", userRouter);
 
 // if request not match with any of the route
 app.all(/.*/, (req, res, next) => {
