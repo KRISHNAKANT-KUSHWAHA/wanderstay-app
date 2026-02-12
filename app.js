@@ -97,18 +97,6 @@ app.use((req, res, next) => {
 
 //demo user
 
-// app.get("/demouser", async (req, res) => {
-//   let fakeUser = new User({
-//     email: "student@gmail.com",
-//     username: "delta-student",
-//   });
-
-//   let registeredUser = await User.register(fakeUser, "helloworld");
-//   res.send(registeredUser);
-// });
-// validate listing
-// validate listing as a middleware jo ki uper likha he ...leave this topic right now check after view time
-
 app.use("/listings", listingRouter); //this single line handle all listing related request
 
 app.use("/listings/:id/reviews", reviewRouter);
@@ -137,6 +125,9 @@ app.use((err, req, res, next) => {
 
 
 //
-app.listen(3001, () => {
-  console.log("server is listening to port 3001");
+const PORT = process.env.PORT || 3001;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
+
