@@ -47,11 +47,9 @@ app.engine("ejs", ejsMate);
 app.use(express.static(Path.join(__dirname, "/public")));
 
 //
+
 const store = MongoStore.create({
   mongoUrl: dbURL,
-  crypto: {
-    secret: process.env.SECRET,
-  },
   touchAfter: 24 * 3600,
 });
 
@@ -63,7 +61,7 @@ const sessionOptions = {
   store,
   secret: process.env.SECRET,
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: {
     expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // after this time session will end
     maxAge: 7 * 24 * 60 * 60 * 1000,
@@ -137,26 +135,8 @@ app.use((err, req, res, next) => {
   res.status(statusCode).render("error", { statusCode, message, err });
 });
 
-// ✅ Fixed test route
-// app.get("/testlisting", async (req, res) => {
-//   let sampleListing = new Listing({
-//     title: "My New Villa",
-//     description: "By the beach", // ✅ changed "Description" → "description"
-//     price: 1200,
-//     location: "Goa",
-//     country: "India",
-//   });
-
-//   await sampleListing.save();
-//   console.log("sample was saved");
-//   res.send("successful testing of Listing model");
-// });
-
-// start the server
 
 //
-
-//
-app.listen(8080, () => {
-  console.log("server is listening to port 8080");
+app.listen(3001, () => {
+  console.log("server is listening to port 3001");
 });
