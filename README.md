@@ -82,4 +82,183 @@ It demonstrates a production-ready backend architecture using authentication, se
 ---
 
 ## 📁 Folder Structure
+wanderstay/
+│
+├── models/
+│ ├── listing.js
+│ ├── review.js
+│ └── user.js
+│
+├── routes/
+│ ├── listing.js
+│ ├── review.js
+│ └── user.js
+│
+├── controller/
+│ ├── listings.js
+│ ├── review.js
+│ └── user.js
+│
+├── views/
+│ ├── listings/
+│ ├── users/
+│ ├── includes/
+│ └── error.ejs
+│
+├── public/
+├── utils/
+├── middleware.js
+├── cloudConfig.js
+├── app.js
+├── package.json
+└── .env
 
+
+---
+
+## ⚙️ Installation & Setup
+
+### 1️⃣ Clone Repository
+
+
+git clone https://github.com/yourusername/wanderstay.git
+cd wanderstay
+
+2️⃣ Install Dependencies
+npm install
+
+3️⃣ Setup Environment Variables
+
+Create a .env file in root directory:
+
+ATLASDB_URL=your_mongodb_connection_string
+SECRET=your_session_secret
+
+CLOUD_NAME=your_cloudinary_name
+CLOUD_API_KEY=your_cloudinary_key
+CLOUD_API_SECRET=your_cloudinary_secret
+
+▶️ Running Locally
+npm start
+
+
+Visit:
+
+http://localhost:3001
+
+---
+🌐 API Endpoints
+Authentication
+Method	Route	Description
+GET	/signup	Signup form
+POST	/signup	Register user
+GET	/login	Login form
+POST	/login	Authenticate user
+GET	/logout	Logout user
+Listings
+Method	Route	Description
+GET	/listings	All listings
+GET	/listings/new	Create listing form
+POST	/listings	Create listing
+GET	/listings/:id	View listing
+PUT	/listings/:id	Update listing
+DELETE	/listings/:id	Delete listing
+Reviews
+Method	Route	Description
+POST	/listings/:id/reviews	Add review
+DELETE	/listings/:id/reviews/:reviewId	Delete review
+---
+📸 Screenshots
+
+Add screenshots here
+
+/screenshots/home.png
+/screenshots/listing.png
+/screenshots/login.png
+
+## 🚀 Deployment (Render)
+Steps:
+
+Push project to GitHub
+
+Go to https://render.com
+
+Create New Web Service
+
+Connect GitHub Repository
+
+Set:
+
+Build Command: npm install
+Start Command: node app.js
+
+
+Add Environment Variables in Render Dashboard
+
+Deploy 🎉
+
+🔮 Future Enhancements
+
+🔍 Search & Filtering
+
+📍 Map Integration (Mapbox)
+
+💳 Payment Integration
+
+📊 Admin Dashboard
+
+🧾 Booking System
+
+🌙 Dark Mode
+
+📱 Responsive UI Improvements
+
+---
+## 🤝 Contributing
+
+Contributions are welcome!
+
+Fork the repository
+
+Create new branch
+
+Commit changes
+
+Push branch
+
+Open Pull Request
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+## 💼 Interview Notes
+
+This project demonstrates:
+
+MVC Architecture
+
+Authentication & Authorization
+
+RESTful Routing
+
+Session Management
+
+Cloud Integration
+
+Production Deployment
+
+Error Handling & Middleware
+
+🌟 Live Demo
+https://wanderstay-app1.onrender.com/listings
+
+👨‍💻 Author
+
+Krishnakant Kushwaha
+
+B.Tech CSE | Full Stack Developer
+Passionate about fullstack development 🚀
+
+⭐ If you found this helpful, consider giving it a star!
