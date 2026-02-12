@@ -283,7 +283,7 @@ https://wanderstay-app1.onrender.com/listings
 **Krishnakant Kushwaha**
 
 B.Tech CSE | Full Stack Developer  
-Passionate about fullstack developer  🚀
+Passionate about backend  🚀
 
 ---
 
