@@ -26,7 +26,7 @@
 
   <!-- button -->
 
-  <div class="btns mb-3">
+  <!-- <div class="btns mb-3">
     <a
       href="/listings/<%= listing._id %>/edit"
       class="btn btn-dark col-1 offset-2 edit-btn"
@@ -36,7 +36,119 @@
     <form method="POST" action="/listings/<%=listing._id%>?_method=DELETE">
       <button class="btn btn-dark offset-2">Delete</button>
     </form>
+  </div> -->
+
+  <div class="show-btn-container">
+
+  <!-- LEFT SIDE -->
+  <div class="show-btn-left">
+    <% if(currUser && listing.owner && listing.owner._id.equals(currUser._id)) { %>
+
+      <a
+        href="/listings/<%= listing._id %>/edit"
+        class="btn edit-btn"
+      >Edit</a>
+
+      <form
+        method="POST"
+        action="/listings/<%=listing._id%>?_method=DELETE"
+      >
+        <button class="btn btn-dark">Delete</button>
+      </form>
+
+    <% } %>
   </div>
+
+  <!-- RIGHT SIDE -->
+  <div class="show-btn-right">
+    <% if(!currUser) { %>
+      <a href="/login" class="btn book-btn">Login to Book</a>
+    <% } else if(currUser && (!listing.owner || !listing.owner._id.equals(currUser._id))) { %>
+      <a href="#booking-form" class="btn book-btn">
+        Book Now &#8377;<%= listing.price.toLocaleString("en-IN") %>
+      </a>
+    <% } %>
+  </div>
+
+</div>
+
+  <% if(currUser && (!listing.owner || !listing.owner._id.equals(currUser._id))) { %>
+  <div class="booking-panel col-6 offset-3 mb-4">
+    <h4>Book this stay</h4>
+
+    <% if(userBooking) { %>
+      <div class="alert alert-success mb-3">
+        You booked this stay from
+        <b><%= userBooking.checkIn.toLocaleDateString("en-IN") %></b>
+        to
+        <b><%= userBooking.checkOut.toLocaleDateString("en-IN") %></b>
+        for &#8377;<%= userBooking.amount.toLocaleString("en-IN") %>.
+      </div>
+    <% } %>
+
+    <form
+      id="booking-form"
+      action="/listings/<%= listing._id %>/bookings"
+      method="POST"
+      class="needs-validation booking-form"
+      data-nightly-price="<%= listing.price %>"
+      novalidate
+    >
+      <div class="row">
+        <div class="mb-3 col-md-6">
+          <label for="checkIn" class="form-label">Check in</label>
+          <input
+            type="date"
+            class="form-control"
+            id="checkIn"
+            name="booking[checkIn]"
+            required
+          />
+          <div class="invalid-feedback">Please select a checkin date.</div>
+        </div>
+
+        <div class="mb-3 col-md-6">
+          <label for="checkOut" class="form-label">Check out</label>
+          <input
+            type="date"
+            class="form-control"
+            id="checkOut"
+            name="booking[checkOut]"
+            required
+          />
+          <div class="invalid-feedback">Please select a valid checkout date.</div>
+        </div>
+      </div>
+
+      <div class="row align-items-end">
+        <div class="mb-3 col-md-4">
+          <label for="guests" class="form-label">Guests</label>
+          <input
+            type="number"
+            class="form-control"
+            id="guests"
+            name="booking[guests]"
+            value="1"
+            min="1"
+            max="20"
+            required
+          />
+          <div class="invalid-feedback">Guests should be between 1 and 20.</div>
+        </div>
+
+        <div class="mb-3 col-md-8">
+          <div class="booking-total">
+            <span id="bookingNights">Select dates</span>
+            <b id="bookingTotal">&#8377;<%= listing.price.toLocaleString("en-IN") %></b>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn book-btn">Confirm Booking</button>
+    </form>
+  </div>
+  <% } %>
+
 
   <!-- review section -->
   <div class="col-8 offset-3 mb-3">

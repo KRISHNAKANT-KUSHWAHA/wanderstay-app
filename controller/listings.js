@@ -1,9 +1,57 @@
 const Listing = require("../models/listing");
 
+// Keywords used by the icon filters on the listings index page.
+const categoryKeywords = {
+  trending: ["trending", "popular", "luxury", "villa", "amazing", "cozy"],
+  mountain: ["mountain", "hill", "hills", "manali", "snow", "cabin"],
+  room: ["room", "apartment", "flat", "studio", "stay"],
+  forest: ["forest", "tree", "trees", "jungle", "woods", "pine"],
+  cities: ["city", "cities", "urban", "delhi", "mumbai", "bangalore", "jaipur"],
+  river: ["river", "lake", "water", "beach", "sea", "maldives"],
+  castles: ["castle", "fort", "palace", "heritage"],
+  pool: ["pool", "swimming", "resort", "villa"],
+  camping: ["camp", "camping", "tent", "outdoor"],
+  farms: ["farm", "farms", "farmhouse", "tractor"],
+  desert: ["desert", "sand", "rajasthan", "jaisalmer"],
+  ancient: ["ancient", "temple", "heritage", "orchha", "historic"],
+};
+
+// Creates a MongoDB text-style filter across listing fields.
+const buildTextSearchFilter = (terms) => {
+  const regexes = terms.map((term) => {
+    const escapedTerm = term.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    return new RegExp(escapedTerm, "i");
+  });
+
+  return {
+    $or: regexes.flatMap((regex) => [
+      { title: regex },
+      { description: regex },
+      { location: regex },
+      { country: regex },
+    ]),
+  };
+};
+
 // Show all listings
 module.exports.index = async (req, res) => {
-  const allListings = await Listing.find({});
-  res.render("listings/index.ejs", { allListings });
+  const { search, category } = req.query;
+  let filter = {};
+
+  if (search && search.trim()) {
+    // Navbar search gets first priority when both search and category exist.
+    filter = buildTextSearchFilter([search]);
+  } else if (category && categoryKeywords[category]) {
+    // Icon filter uses predefined keywords because listings do not have a category field.
+    filter = buildTextSearchFilter(categoryKeywords[category]);
+  }
+
+  const allListings = await Listing.find(filter);
+  res.render("listings/index.ejs", {
+    allListings,
+    search: search || "",
+    category: category || "",
+  });
 };
 
 // Render new form
@@ -20,6 +68,11 @@ module.exports.showListing = async (req, res) => {
       path: "reviews",
       populate: { path: "author" },
     })
+    .populate({
+      path: "bookings",
+      populate: { path: "user" },
+      options: { sort: { createdAt: -1 } },
+    })
     .populate("owner");
 
   if (!listing) {
@@ -27,7 +80,14 @@ module.exports.showListing = async (req, res) => {
     return res.redirect("/listings");
   }
 
-  res.render("listings/show.ejs", { listing });
+  // res.render("listings/show.ejs", { listing });
+  res.render("listings/show.ejs", {
+    listing,
+    razorpayKey: process.env.RAZORPAY_KEY_ID,
+    userBooking: req.user
+      ? listing.bookings.find((booking) => booking.user && booking.user._id.equals(req.user._id))
+      : null,
+  });
 };
 
 // Create

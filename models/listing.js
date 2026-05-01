@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Review = require("./review.js");
+const Booking = require("./booking.js");
 const Schema = mongoose.Schema;
 
 const listingSchema = new Schema({
@@ -27,6 +28,12 @@ const listingSchema = new Schema({
       ref: "Review",
     },
   ],
+  bookings: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Booking",
+    },
+  ],
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -37,6 +44,7 @@ const listingSchema = new Schema({
 listingSchema.post("findOneAndDelete", async (listing) => {
   if (listing) {
     await Review.deleteMany({ _id: { $in: listing.reviews } }); //agr _id in id ka part hogi to bho sari delete ho jyegi
+    await Booking.deleteMany({ _id: { $in: listing.bookings } });
   }
 });
 //

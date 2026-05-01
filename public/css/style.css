@@ -10,45 +10,167 @@ body {
 }
 /* navbar */
 .navbar {
-  height: 5rem;
+  min-height: 5rem;
   background-color: white;
+  padding: 0.75rem 1rem;
 }
 .fa-compass {
-  color: red;
+  color: #fe424d;
+  font-size: 2rem;
 }
 .nav-link {
-  color: #222224 important!;
+  color: #222222 !important;
+  font-weight: 500;
+}
+
+/* Changed navbar search and action links into button-style controls. */
+.nav-search-wrap {
+  flex: 1;
+  max-width: 34rem;
+}
+
+.nav-search-wrap form {
+  width: 100%;
+}
+
+.search-btn {
+  background-color: #fe424d !important;
+  border: none !important;
+  border-radius: 25px !important;
+  color: #fff !important;
+  padding: 0 1rem;
+}
+
+.search-btn:hover {
+  background-color: #e63946 !important;
+  color: #fff !important;
+}
+
+.search-btn i {
+  display: inline;
+  margin-right: 0.5rem;
+}
+
+.search-inp {
+  border-radius: 25px !important;
+  font-size: 1rem;
+  padding: 0.5rem 1.25rem !important;
+}
+
+.nav-action-wrap {
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.nav-add-btn,
+.nav-login-btn,
+.nav-logout-btn,
+.nav-auth-link {
+  align-items: center;
+  border-radius: 999px;
+  display: inline-flex;
+  gap: 0.4rem;
+  justify-content: center;
+  padding: 0.45rem 0.95rem !important;
+}
+
+.nav-add-btn {
+  background-color: #fe424d;
+  color: #fff !important;
+}
+
+.nav-add-btn:hover {
+  background-color: #e63946;
+}
+
+.nav-login-btn {
+  background-color: #222222;
+  color: #fff !important;
+}
+
+.nav-login-btn:hover {
+  background-color: #000000;
+}
+
+.nav-logout-btn {
+  border: 1px solid #222222;
+}
+
+.nav-logout-btn:hover,
+.nav-auth-link:hover {
+  background-color: #f7f7f7;
 }
 
 /* footer */
+.site-footer {
+  margin-top: 2rem;
+}
+
+/* Changed footer into a structured brand, link, social, and copyright layout. */
 .f-info-links a {
   text-decoration: none;
-  color: #222222;
+  color: #555555;
+  font-weight: 500;
 }
 
 .f-info-links a:hover {
-  text-decoration: underline;
+  color: #fe424d;
 }
 
 .f-info-links {
-  width: 100%;
+  display: flex;
+  gap: 1rem;
 }
 .f-info-socials {
-  width: 100%;
-  font-size: 1.3rem;
-  margin-top: 1rem;
+  display: flex;
+  gap: 0.75rem;
 }
-.f-info-socials i {
-  margin-right: 5px;
+
+.f-info-socials a {
+  align-items: center;
+  background-color: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: 50%;
+  color: #222222;
+  display: inline-flex;
+  height: 2.25rem;
+  justify-content: center;
+  text-decoration: none;
+  width: 2.25rem;
+}
+
+.f-info-socials a:hover {
+  border-color: #fe424d;
+  color: #fe424d;
+}
+
+.footer-brand {
+  align-items: center;
+  display: flex;
+  font-size: 1.2rem;
+  font-weight: 700;
+  gap: 0.5rem;
+}
+
+.footer-brand i {
+  color: #fe424d;
+  font-size: 1.5rem;
+}
+
+.footer-copy {
+  color: #666666;
+  font-size: 0.95rem;
 }
 
 .f-info {
-  text-align: center;
-  height: 10rem;
-  background-color: #ebebeb;
+  align-items: center;
+  background-color: #f7f7f7;
+  border-top: 1px solid #e5e5e5;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  gap: 1rem;
+  justify-content: space-between;
+  padding: 1.5rem 2rem;
 }
 /* card */
 .listing-card {
@@ -76,6 +198,44 @@ body {
 
 .listing-link {
   text-decoration: none;
+}
+
+.listing-card-meta {
+  color: #555;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: center;
+  margin-top: 0.35rem;
+}
+
+.listing-book-pill {
+  background-color: #fe424d;
+  border-radius: 0.5rem;
+  color: #fff;
+  display: inline-flex;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1;
+  padding: 0.45rem 0.7rem;
+  white-space: nowrap;
+}
+
+.search-summary {
+  color: #333;
+}
+
+.search-summary a {
+  color: #fe424d;
+  text-decoration: none;
+}
+
+.empty-search {
+  text-align: center;
+}
+
+.empty-search p {
+  color: #555;
 }
 
 /* card effects */
@@ -106,11 +266,223 @@ body {
   height: 30vh;
 }
 
-.btns {
+/* .btns {
+  display: flex;
+} */
+
+/*  */
+/* ===== Show Page Buttons ===== */
+
+.show-btn-container {
+  display: flex;
+  justify-content: space-between; /* left + right alignment */
+  align-items: center;
+  margin: 1.5rem auto;
+  width: 50%; /* same width as listing card */
+}
+
+.show-btn-left {
+  display: flex;
+  gap: 10px;
+}
+
+.show-btn-right {
   display: flex;
 }
+
+/* Book Now Button Style */
+.book-btn {
+  background-color: #28a745 !important;
+  border: none !important;
+  padding: 0.5rem 1.2rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.book-btn:hover {
+  background-color: #218838 !important;
+}
+
+.booking-panel {
+  border: 1px solid #ddd;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+}
+
+.booking-total {
+  align-items: center;
+  background: #f7f7f7;
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  min-height: 2.4rem;
+  padding: 0.5rem 0.75rem;
+}
+
+/*  */
 
 .show-card {
   padding-left: 0;
   padding-right: 0;
+}
+
+/* Responsive change: tablet filters wrap better without changing expanded navbar layout. */
+@media (max-width: 991px) {
+  #filters {
+    gap: 0.5rem;
+  }
+
+  .filter {
+    margin-right: 1rem !important;
+    margin-top: 1rem !important;
+  }
+
+  .tax-toggle {
+    margin-left: 0 !important;
+    margin-top: 1rem;
+    width: 100%;
+  }
+}
+
+/* Responsive change: mobile layout uses full-width controls and stacked content. */
+@media (max-width: 767px) {
+  .navbar {
+    height: auto;
+  }
+
+  .navbar-collapse {
+    background-color: #ffffff;
+    padding: 1rem 0;
+  }
+
+  .nav-search-wrap {
+    max-width: 100%;
+    margin-top: 0.75rem;
+  }
+
+  .nav-action-wrap {
+    align-items: stretch;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+  }
+
+  .nav-add-btn,
+  .nav-login-btn,
+  .nav-logout-btn,
+  .nav-auth-link {
+    width: 100%;
+  }
+
+  .container {
+    max-width: 100%;
+  }
+
+  .nav-search-wrap form {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .search-inp {
+    margin-right: 0 !important;
+    width: 100%;
+  }
+
+  .search-btn {
+    min-height: 2.5rem;
+    width: 100%;
+  }
+
+  #filters {
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+  }
+
+  .filter {
+    flex: 0 0 auto;
+    min-width: 4.5rem;
+  }
+
+  .listing-card-meta {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .col-6.offset-3,
+  .col-8.offset-3,
+  .booking-panel.col-6.offset-3,
+  .show-btn-container {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  .show-btn-container {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .show-btn-left,
+  .show-btn-right {
+    justify-content: flex-start;
+    width: 100%;
+  }
+
+  .show-btn-left form,
+  .show-btn-left .btn,
+  .show-btn-right .btn {
+    flex: 1;
+  }
+
+  .booking-panel {
+    border-radius: 0.6rem;
+  }
+
+  .booking-total {
+    margin-top: 0.25rem;
+  }
+
+  .f-info {
+    flex-direction: column;
+    justify-content: center;
+    padding: 1.5rem 1rem;
+    text-align: center;
+  }
+
+  .f-info-links,
+  .f-info-socials,
+  .footer-brand {
+    justify-content: center;
+  }
+}
+
+/* Responsive change: small phones get shorter images and tighter spacing. */
+@media (max-width: 480px) {
+  .navbar {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .fa-compass {
+    font-size: 1.7rem;
+  }
+
+  .card-img-top {
+    height: 16rem !important;
+  }
+
+  .show-img {
+    height: 14rem !important;
+  }
+
+  .booking-total {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .f-info-links {
+    flex-wrap: wrap;
+  }
 }

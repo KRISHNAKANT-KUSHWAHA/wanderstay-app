@@ -15,6 +15,7 @@ const { listingSchema, reviewSchema } = require("./schema.js"); //for server sid
 // const Reviews = require("./models/review.js"); // require review
 const listingRouter = require("./routes/listing.js"); // require listing
 const reviewRouter = require("./routes/review.js"); // require reviews
+const bookingRouter = require("./routes/booking.js");
 const userRouter = require("./routes/user.js");
 
 const session = require("express-session");
@@ -27,6 +28,8 @@ const User = require("./models/user.js");
 
 // const MONGO_URL = "mongodb://127.0.0.1/wander";
 const dbURL = process.env.ATLASDB_URL;
+
+const paymentRouter = require("./routes/payment");
 
 main()
   .then(() => {
@@ -42,6 +45,8 @@ async function main() {
 app.set("view engine", "ejs");
 app.set("views", Path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json()); //payment
+
 app.use(methodOverride("_method")); // (_method) method ko use krne wale he
 app.engine("ejs", ejsMate);
 app.use(express.static(Path.join(__dirname, "/public")));
@@ -112,8 +117,11 @@ app.use((req, res, next) => {
 app.use("/listings", listingRouter); //this single line handle all listing related request
 
 app.use("/listings/:id/reviews", reviewRouter);
+app.use("/listings/:id/bookings", bookingRouter);
 app.use("/", userRouter);
-
+//
+app.use("/payment", paymentRouter);
+//
 // if request not match with any of the route
 app.all(/.*/, (req, res, next) => {
   next(new ExpressError(404, "page Not Found!"));
@@ -135,8 +143,8 @@ app.use((err, req, res, next) => {
   res.status(statusCode).render("error", { statusCode, message, err });
 });
 
-
 //
+
 app.listen(3001, () => {
   console.log("server is listening to port 3001");
 });

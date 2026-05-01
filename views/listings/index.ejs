@@ -10,10 +10,12 @@
   }
 
   .filter {
+    color: #222222;
     text-align: center;
     margin-right: 2rem;
     margin-top: 2rem;
     opacity: 0.7;
+    text-decoration: none;
   }
 
   .filter:hover {
@@ -22,6 +24,10 @@
   }
   .filter p {
     font-size: 0.8rem;
+  }
+  .active-filter {
+    border-bottom: 2px solid #222222;
+    opacity: 1;
   }
   .tax-info {
     display: none;
@@ -40,54 +46,55 @@
 </style>
 
 <div id="filters">
-  <div class="filter">
+  <!-- Category icons filter listings through the category query parameter. -->
+  <a href="/listings?category=trending" class="filter <%= category === 'trending' ? 'active-filter' : '' %>">
     <i class="fa-solid fa-fire"></i>
     <p>Trending</p>
-  </div>
-  <div class="filter">
+  </a>
+  <a href="/listings?category=mountain" class="filter <%= category === 'mountain' ? 'active-filter' : '' %>">
     <i class="fa-solid fa-mountain"></i>
     <p>Mountain</p>
-  </div>
-  <div class="filter">
+  </a>
+  <a href="/listings?category=room" class="filter <%= category === 'room' ? 'active-filter' : '' %>">
     <i class="fa-solid fa-bed"></i>
     <p>Room</p>
-  </div>
-  <div class="filter">
+  </a>
+  <a href="/listings?category=forest" class="filter <%= category === 'forest' ? 'active-filter' : '' %>">
     <i class="fa-solid fa-tree"></i>
     <p>forest</p>
-  </div>
-  <div class="filter">
+  </a>
+  <a href="/listings?category=cities" class="filter <%= category === 'cities' ? 'active-filter' : '' %>">
     <i class="fa-solid fa-city"></i>
     <p>Cities</p>
-  </div>
-  <div class="filter">
+  </a>
+  <a href="/listings?category=river" class="filter <%= category === 'river' ? 'active-filter' : '' %>">
     <i class="fa-solid fa-water"></i>
     <p>River</p>
-  </div>
-  <div class="filter">
+  </a>
+  <a href="/listings?category=castles" class="filter <%= category === 'castles' ? 'active-filter' : '' %>">
     <i class="fa-brands fa-fort-awesome"></i>
     <p>Castles</p>
-  </div>
-  <div class="filter">
+  </a>
+  <a href="/listings?category=pool" class="filter <%= category === 'pool' ? 'active-filter' : '' %>">
     <i class="fa-solid fa-person-swimming"></i>
     <p>Amazing pool</p>
-  </div>
-  <div class="filter">
+  </a>
+  <a href="/listings?category=camping" class="filter <%= category === 'camping' ? 'active-filter' : '' %>">
     <i class="fa-solid fa-campground"></i>
     <p>Camping</p>
-  </div>
-  <div class="filter">
+  </a>
+  <a href="/listings?category=farms" class="filter <%= category === 'farms' ? 'active-filter' : '' %>">
     <i class="fa-solid fa-tractor"></i>
     <p>Farms</p>
-  </div>
-  <div class="filter">
+  </a>
+  <a href="/listings?category=desert" class="filter <%= category === 'desert' ? 'active-filter' : '' %>">
     <i class="fa-solid fa-gem"></i>
     <p>Desert</p>
-  </div>
-  <div class="filter">
+  </a>
+  <a href="/listings?category=ancient" class="filter <%= category === 'ancient' ? 'active-filter' : '' %>">
     <i class="fa-regular fa-building"></i>
     <p>Ancient</p>
-  </div>
+  </a>
 
   <div class="tax-toggle">
     <div class="form-check form-switch form-check-reverse">
@@ -103,6 +110,29 @@
     </div>
   </div>
 </div>
+
+<% if(search && search.trim()) { %>
+  <!-- Shows the active navbar search and gives a quick reset link. -->
+  <div class="search-summary mt-3 mb-3">
+    Showing results for <b><%= search %></b>
+    <a href="/listings" class="ms-2">Clear search</a>
+  </div>
+<% } %>
+
+<% if(category) { %>
+  <!-- Shows the active icon filter and gives a quick reset link. -->
+  <div class="search-summary mt-3 mb-3">
+    Showing <b><%= category %></b> stays
+    <a href="/listings" class="ms-2">Clear filter</a>
+  </div>
+<% } %>
+
+<% if(allListings.length === 0) { %>
+  <div class="empty-search mt-4">
+    <h4>No listings found</h4>
+    <p>Try searching by another destination, country, or stay name.</p>
+  </div>
+<% } %>
 
 <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
   <!-- card start -->
@@ -121,6 +151,10 @@
           <b><%= listing.title %></b> <br />
           &#8377;<%=listing.price.toLocaleString("en-IN")%>/night
         </p>
+        <div class="listing-card-meta">
+          <span><%= listing.location %></span>
+          <span class="listing-book-pill">Book Now</span>
+        </div>
         <i class="tax-info">&nbsp;&nbsp;+18% GST</i>
         <!--this is creating  equal to the number of list-->
       </div>
