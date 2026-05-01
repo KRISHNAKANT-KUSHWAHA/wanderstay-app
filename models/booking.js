@@ -35,8 +35,6 @@ const bookingSchema = new Schema({
     type: Number,
     required: true,
   },
-  paymentId: String,
-  orderId: String,
   status: {
     type: String,
     enum: ["confirmed", "pending", "cancelled"],

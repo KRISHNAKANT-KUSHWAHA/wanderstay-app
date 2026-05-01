@@ -29,8 +29,6 @@ const User = require("./models/user.js");
 // const MONGO_URL = "mongodb://127.0.0.1/wander";
 const dbURL = process.env.ATLASDB_URL;
 
-const paymentRouter = require("./routes/payment");
-
 main()
   .then(() => {
     console.log("connected to DB");
@@ -45,7 +43,7 @@ async function main() {
 app.set("view engine", "ejs");
 app.set("views", Path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json()); //payment
+app.use(express.json());
 
 app.use(methodOverride("_method")); // (_method) method ko use krne wale he
 app.engine("ejs", ejsMate);
@@ -119,9 +117,6 @@ app.use("/listings", listingRouter); //this single line handle all listing relat
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/listings/:id/bookings", bookingRouter);
 app.use("/", userRouter);
-//
-app.use("/payment", paymentRouter);
-//
 // if request not match with any of the route
 app.all(/.*/, (req, res, next) => {
   next(new ExpressError(404, "page Not Found!"));

@@ -83,7 +83,6 @@ module.exports.showListing = async (req, res) => {
   // res.render("listings/show.ejs", { listing });
   res.render("listings/show.ejs", {
     listing,
-    razorpayKey: process.env.RAZORPAY_KEY_ID,
     userBooking: req.user
       ? listing.bookings.find((booking) => booking.user && booking.user._id.equals(req.user._id))
       : null,
